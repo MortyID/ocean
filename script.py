@@ -19,8 +19,6 @@ def save_wallets_to_json(wallets):
     print("Generated wallets saved to wallets.json")
 
 def create_typesense_compose():
-    typesense_api_key = 'inTheBestDkNodes'
-    admin_password = 'DkNodes'
     docker_compose_template = f"""
 services:
   typesense:
@@ -28,14 +26,11 @@ services:
     container_name: typesense
     ports:
       - "8108:8108"
-    environment:
-      TYPESENSE_API_KEY: '{typesense_api_key}'
-      ADMIN_PASSWORD: '{admin_password}'
     networks:
       - ocean_network
     volumes:
       - typesense-data:/data
-    command: '--data-dir /data --api-key={typesense_api_key} --enable-authentication=true --admin-password={admin_password}'
+    command: '--data-dir /data --api-key=xyz'
 volumes:
   typesense-data:
     driver: local
@@ -140,45 +135,17 @@ services:
     environment:
       PRIVATE_KEY: '{wallet['private_key']}'
       RPCS: '{rpcs_json}'
-      DB_URL: 'http://typesense:8108/?apiKey=inTheBestDkNodes'
+      DB_URL: 'http://{ip_address}:8108/?apiKey=xyz'
       IPFS_GATEWAY: 'https://ipfs.io/'
       ARWEAVE_GATEWAY: 'https://arweave.net/'
-      LOAD_INITIAL_DDOS: ''
-      FEE_TOKENS: ''
-      FEE_AMOUNT: ''
-      ADDRESS_FILE: ''
-      NODE_ENV: ''
-      AUTHORIZED_DECRYPTERS: ''
-      OPERATOR_SERVICE_URL: ''
-      ALLOWED_VALIDATORS: ''
-      INDEXER_NETWORKS: '[]'
       INTERFACES: '["HTTP","P2P"]'
       ALLOWED_ADMINS: '["{wallet['address']}"]'
-      INDEXER_INTERVAL: ''
-      DASHBOARD: 'true'
-      RATE_DENY_LIST: ''
-      MAX_REQ_PER_SECOND: ''
-      MAX_CHECKSUM_LENGTH: ''
-      LOG_LEVEL: ''
       HTTP_API_PORT: '{http_api_port}'
       P2P_ENABLE_IPV4: 'true'
       P2P_ipV4BindAddress: '0.0.0.0'
       P2P_ipV4BindTcpPort: '{p2p_tcp_port}'
       P2P_ipV4BindWsPort: '{p2p_ws_port}'
       P2P_ANNOUNCE_ADDRESSES: '["/ip4/{ip_address}/tcp/{p2p_tcp_port}", "/ip4/{ip_address}/ws/tcp/{p2p_ws_port}"]'
-      P2P_ANNOUNCE_PRIVATE: ''
-      P2P_pubsubPeerDiscoveryInterval: ''
-      P2P_dhtMaxInboundStreams: ''
-      P2P_dhtMaxOutboundStreams: ''
-      P2P_mDNSInterval: ''
-      P2P_connectionsMaxParallelDials: ''
-      P2P_connectionsDialTimeout: ''
-      P2P_ENABLE_UPNP: ''
-      P2P_ENABLE_AUTONAT: ''
-      P2P_ENABLE_CIRCUIT_RELAY_SERVER: ''
-      P2P_ENABLE_CIRCUIT_RELAY_CLIENT: ''
-      P2P_BOOTSTRAP_NODES: ''
-      P2P_FILTER_ANNOUNCED_ADDRESSES: ''
     networks:
       - ocean_network
 
