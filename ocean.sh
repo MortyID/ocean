@@ -1,6 +1,4 @@
 #!/bin/bash
-
-# Color and formatting definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
@@ -8,9 +6,6 @@ CYAN='\033[0;36m'
 YELLOW='\033[1;33m'
 MAGENTA='\033[0;35m'
 RESET='\033[0m'
-
-
-# Icons for menu options
 ICON_TELEGRAM="🚀"
 ICON_INSTALL="🛠️"
 ICON_LOGS="📄"
@@ -18,9 +13,7 @@ ICON_STOP="⏹️"
 ICON_START="▶️"
 ICON_WALLET="💰"
 ICON_EXIT="❌"
-ICON_CHANGE_RPC="🔄"  # New Icon for Change RPC
-
-# Functions to draw borders and display menu
+ICON_CHANGE_RPC="🔄"
 draw_top_border() {
     echo -e "${CYAN}╔══════════════════════════════════════════════════════╗${RESET}"
 }
@@ -36,7 +29,6 @@ draw_bottom_border() {
 print_telegram_icon() {
     echo -e "          ${MAGENTA}${ICON_TELEGRAM} Follow us on Telegram!${RESET}"
 }
-
 display_ascii() {
     echo -e "    ${RED}    ____  __ __    _   ______  ____  ___________${RESET}"
     echo -e "    ${GREEN}   / __ \\/ //_/   / | / / __ \\/ __ \\/ ____/ ___/${RESET}"
@@ -44,8 +36,6 @@ display_ascii() {
     echo -e "    ${YELLOW} / /_/ / /| |   / /|  / /_/ / /_/ / /___ ___/ / ${RESET}"
     echo -e "    ${MAGENTA}/_____/_/ |_|  /_/ |_/\____/_____/_____//____/  ${RESET}"
 }
-
-# Function to get IP address
 get_ip_address() {
     ip_address=$(hostname -I | awk '{print $1}')
     if [[ -z "$ip_address" ]]; then
@@ -55,7 +45,6 @@ get_ip_address() {
     fi
     echo "$ip_address"
 }
-
 show_menu() {
     clear
     draw_top_border
