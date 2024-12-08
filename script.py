@@ -150,7 +150,6 @@ services:
       NODE_ENV: ''
       AUTHORIZED_DECRYPTERS: ''
       OPERATOR_SERVICE_URL: ''
-      INTERFACES: ''
       ALLOWED_VALIDATORS: ''
       INDEXER_NETWORKS: '[]'
       INTERFACES: '["HTTP","P2P"]'
