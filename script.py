@@ -111,7 +111,7 @@ services:
     environment:
       PRIVATE_KEY: '{wallet['private_key']}'
       RPCS: '{rpcs_json}'
-      DB_URL: 'http://{ip_address}:8108/?apiKey=xyz'
+      DB_URL: 'http://typesense:8108/?apiKey=xyz'
       IPFS_GATEWAY: 'https://ipfs.io/'
       ARWEAVE_GATEWAY: 'https://arweave.net/'
       INTERFACES: '["HTTP","P2P"]'
