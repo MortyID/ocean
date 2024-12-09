@@ -116,9 +116,9 @@ rpcs = {
 rpcs_json = json.dumps(rpcs)
 
 def create_ocean_node_compose(wallet, i, ip_address):
-    http_api_port = 2002 + i
-    p2p_tcp_port = 3002 + i
-    p2p_ws_port = 4002 + i
+    http_api_port = 12002 + i
+    p2p_tcp_port = 13002 + i
+    p2p_ws_port = 14002 + i
     docker_compose_template = f"""
 services:
   ocean-node{i}:
@@ -127,11 +127,11 @@ services:
     container_name: ocean-node-{i}
     restart: on-failure
     ports:
-      - "{2002 + i}:{2002 + i}"
-      - "{3002 + i}:{3002 + i}"
-      - "{4002 + i}:{4002 + i}"
-      - "{5002 + i}:{5002 + i}"
-      - "{6002 + i}:{6002 + i}"
+      - "{12002 + i}:{12002 + i}"
+      - "{13002 + i}:{13002 + i}"
+      - "{14002 + i}:{14002 + i}"
+      - "{15002 + i}:{15002 + i}"
+      - "{16002 + i}:{16002 + i}"
     environment:
       PRIVATE_KEY: '{wallet['private_key']}'
       RPCS: '{rpcs_json}'
