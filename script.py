@@ -18,30 +18,6 @@ def save_wallets_to_json(wallets):
         json.dump(wallets, json_file, indent=4)
     print("Generated wallets saved to wallets.json")
 
-def create_typesense_compose():
-    docker_compose_template = f"""
-services:
-  typesense:
-    image: typesense/typesense:26.0
-    container_name: typesense
-    ports:
-      - "8108:8108"
-    networks:
-      - ocean_network
-    volumes:
-      - typesense-data:/data
-    command: '--data-dir /data --api-key=xyz'
-volumes:
-  typesense-data:
-    driver: local
-
-networks:
-  ocean_network:
-    external: true
-"""
-    save_docker_compose_file(docker_compose_template, 1)
-    print("Generated docker-compose1.yaml for typesense")
-
 rpcs = {
     "1": {
         "rpc": "https://ethereum-rpc.publicnode.com",
@@ -141,17 +117,55 @@ services:
       INTERFACES: '["HTTP","P2P"]'
       ALLOWED_ADMINS: '["{wallet['address']}"]'
       HTTP_API_PORT: '{http_api_port}'
+      DASHBOARD: 'false'
       P2P_ENABLE_IPV4: 'true'
       P2P_ipV4BindAddress: '0.0.0.0'
       P2P_ipV4BindTcpPort: '{p2p_tcp_port}'
       P2P_ipV4BindWsPort: '{p2p_ws_port}'
       P2P_ANNOUNCE_ADDRESSES: '["/ip4/{ip_address}/tcp/{p2p_tcp_port}", "/ip4/{ip_address}/ws/tcp/{p2p_ws_port}"]'
+      P2P_ANNOUNCE_PRIVATE: 'True'
+      P2P_pubsubPeerDiscoveryInterval: '10000'
+      P2P_dhtMaxInboundStreams: '500'
+      P2P_dhtMaxOutboundStreams: '500'
+      P2P_ENABLE_DHT_SERVER: 'false'
+      P2P_mDNSInterval: '20000'
+      P2P_connectionsMaxParallelDials: '150'
+      P2P_connectionsDialTimeout: '10000'
+      P2P_ENABLE_UPNP: 'True'
+      P2P_ENABLE_AUTONAT: 'True'
+      P2P_ENABLE_CIRCUIT_RELAY_SERVER: 'True'
+      P2P_ENABLE_CIRCUIT_RELAY_CLIENT: '0'
+#      P2P_BOOTSTRAP_NODES: ''
+      P2P_FILTER_ANNOUNCED_ADDRESSES: '2000172.15.0.0/24'
+      P2P_MIN_CONNECTIONS: '1'
+      P2P_MAX_CONNECTIONS: '300'
+      P2P_AUTODIALPEERRETRYTHRESHOLD: '1000 * 120'
+      P2P_AUTODIALCONCURRENCY: '5'
+      P2P_MAXPEERADDRSTODIAL: '5'
+      P2P_AUTODIALINTERVAL: '5000'
+      P2P_ENABLE_NETWORK_STATS: 'getP2pNetworkStats'
     networks:
       - ocean_network
+    depends_on:
+      - typesense
+  typesense:
+    image: typesense/typesense:26.0
+    container_name: typesense
+    ports:
+      - "8108:8108"
+    networks:
+      - ocean_network
+    volumes:
+      - typesense-data:/data
+    command: '--data-dir /data --api-key=xyz'
+
+volumes:
+  typesense-data:
+    driver: local
 
 networks:
   ocean_network:
-    external: true
+    driver: bridge
 """
     save_docker_compose_file(docker_compose_template, i + 1)
     print(f"Generated docker-compose{i + 1}.yaml for ocean-node-{i}")
@@ -171,7 +185,6 @@ def main():
 
     wallets = generate_wallets(num_files)
     save_wallets_to_json(wallets)
-    create_typesense_compose()
 
     for i, wallet in enumerate(wallets, start=1):
         create_ocean_node_compose(wallet, i, ip_address)
